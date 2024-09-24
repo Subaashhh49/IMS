@@ -1,8 +1,8 @@
 from django.shortcuts import render
-from .models import ProductType,Product
+from .models import ProductType,Product,Purchase,Department,Vendor,Sales,Customer
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.generics import GenericAPIView
-from .serializers import ProductTypeSerializer,ProductSerializer
+from .serializers import ProductTypeSerializer,ProductSerializer,PurchaseSerializer,DepartmentSerializer,VendorSerializer,SalesSerializer,CustomerSerializer
 from rest_framework.response import Response
 # Create your views here.
 
@@ -25,3 +25,23 @@ class ProductApiView(GenericAPIView):
         else:
            return Response(serializer.errors)
        
+
+class PurchaseApiView(ModelViewSet):
+    queryset = Purchase.objects.all()
+    serializer_class = PurchaseSerializer
+
+class DepartmentApiView(ModelViewSet):
+    queryset = Department.objects.all()
+    serializer_class = DepartmentSerializer
+
+class VendorApiView(ModelViewSet):
+    queryset = Vendor.objects.all()
+    serializer_class = VendorSerializer
+
+class SalesApiView(ModelViewSet):
+    queryset = Sales.objects.all()
+    serializer_class = SalesSerializer
+
+class CustomerApiView(ModelViewSet):
+    queryset = Customer.objects.all()
+    serializer_class = CustomerSerializer
