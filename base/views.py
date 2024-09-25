@@ -12,6 +12,9 @@ class ProductTypeApiView(ModelViewSet):
     
     
 class ProductApiView(GenericAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+    
     def get(self,request):
        product_objs = Product.objects.all()
        serializer = ProductSerializer(product_objs,many=True)
@@ -24,8 +27,43 @@ class ProductApiView(GenericAPIView):
           return Response('Data Created')
         else:
            return Response(serializer.errors)
-       
 
+class ProductDetailApiView(GenericAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+    
+    def get(self,request,pk):
+        try:
+           product_obj = Product.objects.get(id=pk)
+        except:
+            return Response('Data Not Found!')
+        serializer = ProductSerializer(product_obj)
+        return Response(serializer.data)
+    
+    def put(self,request,pk):
+        try:
+           product_obj = Product.objects.get(id=pk)
+        except:
+            return Response('Data Not Found!')
+        
+        serializer = ProductSerializer(product_obj,data=request.data)
+        if serializer.is_valid:
+            serializer.save()
+            return Response('Data Updated!')
+        else:
+            return Response(serializer.errors)
+    
+     
+    def delete(self,request,pk):
+      
+        try:
+           product_obj = Product.objects.get(id=pk)
+          
+        except:
+            return Response('Data Not Found!')
+        product_obj.delete()
+        return Response('Data Deleted!')
+        
 class PurchaseApiView(ModelViewSet):
     queryset = Purchase.objects.all()
     serializer_class = PurchaseSerializer

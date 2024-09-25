@@ -33,7 +33,7 @@ class VendorSerializer(ModelSerializer):
         
 class SalesSerializer(ModelSerializer):
     class Meta:
-        model = Purchase
+        model = Sales
         fields = '__all__'
  
         
