@@ -5,14 +5,16 @@ from django.contrib.auth.models import AbstractUser
 
 
 class User(AbstractUser):
-    full_name = models.CharField(max_length=300)
+    full_name = models.CharField(max_length=300,null=True)
     email = models.EmailField(unique=True)
     password = models.CharField(max_length=300)
-    image = models.ImageField()
-    phone_number = models.IntegerField()
+    image = models.ImageField(null=True)
+    phone_number = models.IntegerField(null=True)
+    username =  models.CharField(max_length=300,default='username')
+
     
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = []
+    REQUIRED_FIELDS = ['username']
     
 class ProductType(models.Model):
     name = models.CharField(max_length=300)
