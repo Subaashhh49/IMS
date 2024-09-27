@@ -4,7 +4,11 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.generics import GenericAPIView
 from .serializers import UserSerializer,ProductTypeSerializer,ProductSerializer,PurchaseSerializer,DepartmentSerializer,VendorSerializer,SalesSerializer,CustomerSerializer
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view,permission_classes
+from rest_framework.permissions import IsAuthenticated
+from django.contrib.auth import authenticate
+from  rest_framework.authtoken.models import Token
+
 
 # Create your views here.
 
@@ -17,9 +21,22 @@ def register(request):
     else:
         return Response(serializer.errors)
 
+@api_view(['POST'])
+@permission_classes([])
+def login(request):
+    email = request.data.get('email')
+    password = request.data.get('password')
+    user = authenticate(username=email,password=password)
+    if user == None:
+        return Response('Invalid credentials')
+    else:
+        token,_ = Token.objects.get_or_create(user=user)
+        return Response(token.key)
+        
 class ProductTypeApiView(ModelViewSet):
     queryset = ProductType.objects.all()
     serializer_class = ProductTypeSerializer
+    permission_classes = [IsAuthenticated]
     
     
 class ProductApiView(GenericAPIView):
