@@ -2,16 +2,26 @@ from django.shortcuts import render
 from .models import ProductType,Product,Purchase,Department,Vendor,Sales,Customer
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.generics import GenericAPIView
-from .serializers import UserSerializer,ProductTypeSerializer,ProductSerializer,PurchaseSerializer,DepartmentSerializer,VendorSerializer,SalesSerializer,CustomerSerializer
+from .serializers import UserSerializer,ProductTypeSerializer,ProductSerializer,PurchaseSerializer,DepartmentSerializer,VendorSerializer,SalesSerializer,CustomerSerializer,GroupSerializer
 from rest_framework.response import Response
 from rest_framework.decorators import api_view,permission_classes
 from rest_framework.permissions import IsAuthenticated,DjangoModelPermissions
 from django.contrib.auth import authenticate
 from  rest_framework.authtoken.models import Token
 from django.contrib.auth.hashers import make_password
+from django.contrib.auth.models import Group
 
 
 # Create your views here.
+
+@api_view(['GET'])
+@permission_classes([])
+def group(request):
+    group_objs = Group.objects.all()
+    serializer = GroupSerializer(group_objs,many=True)
+    return Response(serializer.data)
+    
+
 
 @api_view(['POST'])
 @permission_classes([])
