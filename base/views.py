@@ -54,15 +54,19 @@ class ProductTypeApiView(ModelViewSet):
     queryset = ProductType.objects.all()
     serializer_class = ProductTypeSerializer
     permission_classes = [IsAuthenticated]
+   
     
     
 class ProductApiView(GenericAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     permission_classes = [DjangoModelPermissions]
+    filterset_fields = ['department','type']
+    search_fields = ['name']
     
     def get(self,request):
        product_objs = Product.objects.all()
+       product_filter_objs = self.filter_queryset(product_objs)
        serializer = ProductSerializer(product_objs,many=True)
        return Response(serializer.data)
    

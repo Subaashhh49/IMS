@@ -22,8 +22,8 @@ class ProductType(models.Model):
 class Product(models.Model):
     name = models.CharField(max_length=300)
     quantity = models.IntegerField()
-    department = models.ManyToManyField('Department',null=True)
-    type = models.ForeignKey(ProductType,on_delete=models.SET_NULL,null=True,blank=True)
+    department = models.ManyToManyField('Department',null=True,blank=True)
+    type = models.ForeignKey(ProductType,on_delete=models.SET_NULL,null=True)
     
 class Purchase(models.Model):
     product = models.ForeignKey(Product,on_delete=models.SET_NULL,null=True)
